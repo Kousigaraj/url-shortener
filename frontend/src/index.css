@@ -1,0 +1,16 @@
+.card {
+    width: 50%;
+}
+
+.redirect-card{
+    width: 40%;
+}
+
+@media screen and (max-width: 768px) {
+    .card {
+        width: 95%;
+    }
+    .redirect-card{
+        width: 80%;
+    }
+}
