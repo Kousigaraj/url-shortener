@@ -3,6 +3,7 @@ import MuiAlert from "@mui/material/Alert";
 import { Card, CardContent, Container, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import StatsTable from "../components/StatsTable";
+import ToastBox from "../components/ToastBox";
 
 export default function StatsPage() {
   const [open, setOpen] = useState(false);
@@ -85,22 +86,7 @@ export default function StatsPage() {
           )}
         </CardContent>
       </Card>
-      <Snackbar
-        open={open}
-        autoHideDuration={2000}
-        onClose={() => setOpen(false)}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      >
-        <MuiAlert
-          onClose={() => setOpen(false)}
-          severity={message.success ? "success" : "error"}
-          sx={{ width: "100%" }}
-          elevation={6}
-          variant="filled"
-        >
-          {message.message}
-        </MuiAlert>
-      </Snackbar>
+      <ToastBox open={open} setOpen={setOpen} message={message}/>
     </Container>
   );
 }

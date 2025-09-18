@@ -1,10 +1,10 @@
-import { TextField, Button, Typography, Box, Snackbar } from "@mui/material";
+import { TextField, Button, Typography, Box } from "@mui/material";
 import { useState } from "react";
 import { saveUrl } from "../utils/utils";
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
-import MuiAlert from "@mui/material/Alert";
+import ToastBox from "../components/ToastBox";
 
 function Home() {
   const [url, setUrl] = useState("");
@@ -16,8 +16,11 @@ function Home() {
 
   const handleSubmit = async(e) => {
     e.preventDefault();
-    if (!url.startsWith("http")) {
-      alert("Enter a valid URL");
+    try {
+      new URL(url); // will throw if invalid
+    } catch {
+      setMessage({ success: false, message: "Enter a valid URL" });
+      setOpen(true);
       return;
     }
     const result = await saveUrl(url, custom, expiry);
@@ -87,22 +90,7 @@ function Home() {
           </CardContent>
         </Card>
       )}
-      <Snackbar
-        open={open}
-        autoHideDuration={2000}
-        onClose={() => setOpen(false)}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      >
-        <MuiAlert
-          onClose={() => setOpen(false)}
-          severity={message.success ? "success" : "error"}
-          sx={{ width: "100%" }}
-          elevation={6}
-          variant="filled"
-        >
-          {message.message}
-        </MuiAlert>
-      </Snackbar>
+      <ToastBox open={open} setOpen={setOpen} message={message}/>
     </Box>
   );
 }

@@ -1,69 +1,52 @@
+// Save a new URL
 export async function saveUrl(original, custom, minutes) {
-  
-  let code = custom;
-  if(!code){
-    code = Math.random().toString(36).substring(2, 7);
-    let result = await fetch(`/api/urls/${code}`);
-    if (result) {
-      code = Math.random().toString(36).substring(2, 7);
-    }
-  }
-  
-  const expiry = Date.now() + minutes * 60000;
-  const created = Date.now();
-  const newUrl = { original, code, created, expiry, clicks: [] };
+  const newUrl = { original, custom, minutes };
+
   try {
-    const res = await fetch('/api/urls', {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newUrl)
+    const res = await fetch("/api/urls", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newUrl),
     });
-    const data = await res.json();
-    return data;
+
+    return await res.json();
   } catch (error) {
+    console.error("Error saving URL:", error);
     return { success: false, message: "Network error. Please try again." };
   }
 }
 
+// Get all URLs
 export async function getAllUrls() {
   try {
-    const res = await fetch('/api/urls');
+    const res = await fetch("/api/urls");
     const data = await res.json();
     return data?.data || [];
   } catch (error) {
-    console.error('Error in fetching data', error);
+    console.error("Error in fetching data:", error);
     return [];
   }
 }
 
+// Delete a URL
 export async function deleteUrl(code) {
   try {
-    const res = await fetch(`/api/urls/${code}`, {
-      method: 'DELETE',
-    });
+    const res = await fetch(`/api/urls/${code}`, { method: "DELETE" });
     return await res.json();
   } catch (error) {
-    console.error('Error deleting URL', error);
+    console.error("Error deleting URL:", error);
     return { success: false, message: "Network error. Please try again." };
   }
 }
 
+// Log a click
 export async function logClick(code) {
   try {
     const res = await fetch(`/api/urls/${code}/clicks`, {
-      method: 'POST',
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        time: new Date().toISOString(),
-        referrer: document.referrer || "direct"
-      })
+      method: "POST",
     });
-
     return await res.json();
   } catch (error) {
-    
+    console.error("Error logging click:", error);
   }
 }
-

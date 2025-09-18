@@ -29,7 +29,7 @@ const StatsTable = ({url, handleOpen, handleDelete, handleCopy}) => {
             <TableCell>
                 <Box
                     display={'flex'}
-                    justifyContent={'center'}
+                    justifyContent={'start'}
                     alignItems={'center'}
                     gap={1}
                 >
