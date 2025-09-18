@@ -45,8 +45,7 @@ export async function logClick(code) {
     // Get the referrer from the browser
     const referrer = document.referrer || "Direct";
 
-    // Send click info to backend
-    const res = await fetch(`/api/urls/${code}/click`, {
+    const res = await fetch(`/api/urls/${code}/clicks`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
