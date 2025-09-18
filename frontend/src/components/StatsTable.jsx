@@ -80,7 +80,8 @@ const StatsTable = ({url, handleOpen, handleDelete, handleCopy}) => {
                 <Typography sx={{fontWeight: '600', fontSize: 13}} gutterBottom>
                     Click Details ({url.clicks.length} clicks)
                 </Typography>
-                {url.clicks.map((click, index) => (
+                
+                {url.clicks.length > 0 ? url.clicks.map((click, index) => (
                     <Box
                     key={index}
                     display={'flex'}
@@ -97,7 +98,11 @@ const StatsTable = ({url, handleOpen, handleDelete, handleCopy}) => {
                         Referrer: {click.referrer || "Direct"}
                     </Typography>
                     </Box>
-                ))}
+                )): 
+                <Typography sx={{ color: "grey", fontSize: 13 }}>
+                    No clicks recorded yet.
+                </Typography>
+                }
                 </Box>
             </Collapse>
             </TableCell>
