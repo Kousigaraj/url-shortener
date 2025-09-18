@@ -87,8 +87,11 @@ export const createUrls = async (req, res) => {
 export const logClick = async (req, res) => {
   try {
     const { code } = req.params;
-    const time = new Date().toISOString();
-    const referrer = req.get("Referrer") || "direct";
+    const { time, referrer } = req.body;
+
+    if(!time || !referrer){
+      return res.status(400).json({ success: false, message: "Please provide all details" });
+    }
 
     const url = await urls.findOneAndUpdate(
       { code },

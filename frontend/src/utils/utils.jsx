@@ -42,9 +42,21 @@ export async function deleteUrl(code) {
 // Log a click
 export async function logClick(code) {
   try {
-    const res = await fetch(`/api/urls/${code}/clicks`, {
+    // Get the referrer from the browser
+    const referrer = document.referrer || "Direct";
+
+    // Send click info to backend
+    const res = await fetch(`/api/urls/${code}/click`, {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        time: new Date().toISOString(), // log exact click time
+        referrer
+      }),
     });
+
     return await res.json();
   } catch (error) {
     console.error("Error logging click:", error);
